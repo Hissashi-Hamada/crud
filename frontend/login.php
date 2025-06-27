@@ -1,6 +1,33 @@
 <?php
 include '../backend/config.php';
 
+$nome = $_POST['nome'];
+$email = $_POST['email'];
+$senha = $_POST['senha'];
+
+// Verifica se a senha é a mesma (com o mesmo numero de caracteres, número, letra)
+if (strlen($senha) > 8 || !preg_match('/[A-Za-z]/', $senha) || !preg_match('/[0-9]/', $senha)) {
+    die("A senha não e a mesma snha de.");
+}
+
+// Inserir no banco
+$sql = "INSERT INTO usuarios (nome, email, senha) VALUES (?, ?, ?)";
+$stmt = $conn->prepare($sql);
+$stmt->bind_param("sss", $nome, $email, $senha);
+
+if ($stmt->execute()) {
+    
+} else {
+    echo "Erro ao cadastrar: " . $stmt->error;
+
+if (isset($_POST['botao_enviar'])) {
+    // Aqui pode ter uma verificação ou ação qualquer
+    if (/* condição para redirecionar */ true) {
+        header("Location: outra_pagina.php");
+        exit(); // Importante para parar o script após o redirecionamento
+    }
+}
+}
 
 ?>
 <!DOCTYPE html>
@@ -45,7 +72,8 @@ include '../backend/config.php';
                     </div>
 
                     <div class="d-grid">
-                        <button type="submit" class="btn btn-primary">Entrar</button>
+                        <button type="submit" class="btn btn-primary"  >Entrar</button>
+
                     </div>
 
                     <div class="mt-3 text-center">
