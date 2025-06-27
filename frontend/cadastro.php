@@ -2,22 +2,34 @@
 include '../backend/config.php';
 
 // Verifica se formulário foi enviado
-if ($_POST) {
-    // Evita erro se o campo não existir
-    $formulario = $_POST['formulario'] ?? '';
 
-    echo '<br>';
+$Nome_Fomulario = $_POST['Nome_Fomulario'];
+$nome = $_POST['nome'];
+$email = $_POST['email'];
+$senha = $_POST['senha'];
+$confirmar = $_POST['confirmar_senha'];
 
-    if ($formulario === 'cadastro') {
-        echo 'Formulário de Cadastro recebido<br>';
-        echo 'Nome: ' . htmlspecialchars($_POST['nome']) . '<br>';
-        echo 'Email: ' . htmlspecialchars($_POST['email']) . '<br>';
-        echo 'Senha: ' . htmlspecialchars($_POST['senha']) . '<br>';
-        echo 'Confirmação: ' . htmlspecialchars($_POST['confirmar_senha']) . '<br>';
-    } else {
-        echo 'Tipo de formulário não reconhecido.';
-    }
+// Verifica se as senhas coincidem
+if ($senha !== $confirmar) {
+    echo "<script>alert('As senhas não coincidem.');</script>";
 }
+
+// Verifica se a senha é forte (mínimo 6 caracteres, número, letra)
+if (strlen($senha) > 8 || !preg_match('/[A-Za-z]/', $senha) || !preg_match('/[0-9]/', $senha)) {
+    die("A senha deve ter pelo menos 6 caracteres, incluindo letras e números.");
+}
+
+// Inserir no banco
+$sql = "INSERT INTO usuarios (nome, email, senha) VALUES (?, ?, ?)";
+$stmt = $conn->prepare($sql);
+$stmt->bind_param("sss", $nome, $email, $senha);
+
+if ($stmt->execute()) {
+    echo "Cadastro realizado com sucesso!";
+} else {
+    echo "Erro ao cadastrar: " . $stmt->error;
+}
+
 ?>
 <!DOCTYPE html>
 <html lang="pt-br">
@@ -40,7 +52,7 @@ if ($_POST) {
 </nav>
 
 <!-- Formulário de Cadastro -->
-<div class="d-flex justify-content-center align-items-center vh-100">
+<!--<div class="d-flex justify-content-center align-items-center vh-100"> -->
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-md-5">
@@ -81,6 +93,7 @@ if ($_POST) {
         </div>
     </div>
 </div>
+
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"></script>
 </body>

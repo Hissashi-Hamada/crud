@@ -1,17 +1,7 @@
 <?php
 include '../backend/config.php';
 
-echo '<br>';
 
-if (isset($_POST['formulario'])) {
-    $tipo = $_POST['formulario'];
-
-    echo $tipo === 'login' ? 'Isso é login<br>' : 'Isso é cadastro<br>';
-    echo 'Nome: ' . htmlspecialchars($_POST['nome']) . '<br>';
-    echo 'Senha: ' . htmlspecialchars($_POST['senha']) . '<br>';
-} else {
-    echo 'formulario não informado<br>';
-}
 ?>
 <!DOCTYPE html>
 <html lang="pt-br">
