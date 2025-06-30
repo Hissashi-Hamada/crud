@@ -1,58 +1,86 @@
 <?php
 include '../backend/config.php';
 
-// Verifica se formulário foi enviado
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    if (isset($_POST['formulario']) && $_POST['formulario'] === 'cadastro') {
 
-$Nome_Fomulario = $_POST['Nome_Fomulario'];
-$nome = $_POST['nome'];
-$email = $_POST['email'];
-$senha = $_POST['senha'];
-$confirmar = $_POST['confirmar_senha'];
+        $nome = $_POST['nome'] ?? '';
+        $email = $_POST['email'] ?? '';
+        $senha = $_POST['senha'] ?? '';
+        $confirmar = $_POST['confirmar_senha'] ?? '';
 
-// Verifica se as senhas coincidem
-if ($senha !== $confirmar) {
-    echo "<script>alert('As senhas não coincidem.');</script>";
+        if ($senha !== $confirmar) {
+            die("❌ As senhas não coincidem.");
+        }
+
+        if (strlen($senha) < 6 || !preg_match('/[A-Za-z]/', $senha) || !preg_match('/[0-9]/', $senha)) {
+            die("❌ A senha deve ter pelo menos 6 caracteres, incluindo letras e números.");
+        }
+
+        try {
+            // Verifica se o e-mail já está cadastrado
+            $verifica = $pdo->prepare("SELECT id FROM usuarios WHERE email = :email");
+            $verifica->bindParam(':email', $email);
+            $verifica->execute();
+
+            if ($verifica->rowCount() > 0) {
+                die("❌ Este e-mail já está cadastrado.");
+            }
+
+            // Inserir no banco
+            $sql = "INSERT INTO usuarios (nome, email, senha) VALUES (:nome, :email, :senha)";
+            $stmt = $pdo->prepare($sql);
+            $stmt->bindParam(':nome', $nome);
+            $stmt->bindParam(':email', $email);
+            $stmt->bindParam(':senha', $senha);
+
+            if ($stmt->execute()) {
+
+                $PegarUsuarioCadastrado = $pdo->prepare("SELECT * FROM usuarios WHERE email = :email");
+                $PegarUsuarioCadastrado->bindParam(':email', $email);
+                $PegarUsuarioCadastrado->execute();
+
+                $resultado = $PegarUsuarioCadastrado->fetch(PDO::FETCH_ASSOC);
+                session_start(); // Inicia sessão se ainda não estiver iniciada
+                $_SESSION = $resultado;
+
+
+                header('Location: capa_do_site.php'); // Redireciona para a página desejada
+                exit(); // Finaliza o script após o redirecionamento
+            } else {
+                echo "❌ Erro ao cadastrar.";
+            }
+        } catch (PDOException $e) {
+            echo "❌ Erro no banco de dados: " . $e->getMessage();
+        }
+    }
 }
-
-// Verifica se a senha é forte (mínimo 6 caracteres, número, letra)
-if (strlen($senha) > 8 || !preg_match('/[A-Za-z]/', $senha) || !preg_match('/[0-9]/', $senha)) {
-    die("A senha deve ter pelo menos 6 caracteres, incluindo letras e números.");
-}
-
-// Inserir no banco
-$sql = "INSERT INTO usuarios (nome, email, senha) VALUES (?, ?, ?)";
-$stmt = $conn->prepare($sql);
-$stmt->bind_param("sss", $nome, $email, $senha);
-
-if ($stmt->execute()) {
-    echo "Cadastro realizado com sucesso!";
-} else {
-    echo "Erro ao cadastrar: " . $stmt->error;
-}
-
 ?>
+
 <!DOCTYPE html>
 <html lang="pt-br">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cadastro</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
+
 <body>
 
-<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
-    <div class="container-fluid">
-        <a class="navbar-brand" href="<?php echo $front ?>/capa_do_site.php">Menu</a>
-        <div class="container mt-4">
-            <a class="btn btn-primary me-2" style="border: 1px solid white;" href="<?php echo $front ?>/login.php">Login</a>
-            <a class="btn btn-success" style="border: 1px solid white;" href="<?php echo $front ?>/cadastro.php">Cadastro</a>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="<?php echo $front ?>/capa_do_site.php">Menu</a>
+            <div class="container mt-4">
+                <a class="btn btn-primary me-2" style="border: 1px solid white;" href="<?php echo $front ?>/login.php">Login</a>
+                <a class="btn btn-success" style="border: 1px solid white;" href="<?php echo $front ?>/cadastro.php">Cadastro</a>
+            </div>
         </div>
-    </div>
-</nav>
+    </nav>
 
-<!-- Formulário de Cadastro -->
-<!--<div class="d-flex justify-content-center align-items-center vh-100"> -->
+    <!-- Formulário de Cadastro -->
+    <!--<div class="d-flex justify-content-center align-items-center vh-100"> -->
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-md-5">
@@ -92,9 +120,10 @@ if ($stmt->execute()) {
             </div>
         </div>
     </div>
-</div>
+    </div>
 
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"></script>
 </body>
+
 </html>
