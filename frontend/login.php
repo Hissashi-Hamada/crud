@@ -107,17 +107,6 @@ if ($login === "login") {
                             <input type="text" name="email" class="form-control" id="email_login" placeholder="Digite seu email">
                         </div>
 
-<<<<<<< HEAD
-                        <div class="mb-3">
-                            <label class="form-label" for="senha_login">Senha:</label>
-                            <input type="password" name="senha" class="form-control" id="senha_login" placeholder="Digite sua senha">
-                        </div>
-=======
-                    <div class="d-grid">
-                        <button type="submit" class="btn btn-primary"  >Entrar</button>
-
-                    </div>
->>>>>>> 33f4298045ee762402d378a01914f94853a66504
 
                         <div class="d-grid">
                             <button type="submit" class="btn btn-primary">Entrar</button>
