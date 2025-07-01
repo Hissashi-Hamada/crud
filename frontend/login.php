@@ -58,10 +58,10 @@ if ($login === "login") {
         <div class="container-fluid">
             <a class="navbar-brand" href="<?php echo $front ?>/capa_do_site.php">Menu</a>
 
-            <div class="container mt-4">
-                <a class="btn btn-primary me-2" style="border: 1px solid white;" href="<?php echo $front ?>/login.php">Login</a>
-                <a class="btn btn-success" style="border: 1px solid white;" href="<?php echo $front ?>/cadastro.php">Cadastro</a>
-            </div>
+    <div class="container mt-4" style="display: flex; align-content: center; flex-wrap: wrap; align-items: center; justify-content: flex-end; ">
+        <a class="btn btn-primary me-2" style="border: 1px solid white;" href="<?php echo $front ?>/login.php">Login</a>
+        <a class="btn btn-success"  style="border: 1px solid white;"  href="<?php echo $front ?>/cadastro.php">Cadastro</a>
+    </div>
         </div>
     </nav>
 

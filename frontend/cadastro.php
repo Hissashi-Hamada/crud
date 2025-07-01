@@ -9,7 +9,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $senha = $_POST['senha'] ?? '';
         $confirmar = $_POST['confirmar_senha'] ?? '';
 
-        if ($senha !== $confirmar) {
+        if ($senha !== $confirmar) {    
             die("❌ As senhas não coincidem.");
         }
 
@@ -69,20 +69,23 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 <body>
 
+<header>
     <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
         <div class="container-fluid">
             <a class="navbar-brand" href="<?php echo $front ?>/capa_do_site.php">Menu</a>
-            <div class="container mt-4">
-                <a class="btn btn-primary me-2" style="border: 1px solid white;" href="<?php echo $front ?>/login.php">Login</a>
-                <a class="btn btn-success" style="border: 1px solid white;" href="<?php echo $front ?>/cadastro.php">Cadastro</a>
-            </div>
+                <div class="container mt-4" style="display: flex; align-content: center; flex-wrap: wrap; align-items: center; justify-content: flex-end; ">
+        <a class="btn btn-primary me-2" style="border: 1px solid white;" href="<?php echo $front ?>/login.php">Login</a>
+        <a class="btn btn-success"  style="border: 1px solid white;"  href="<?php echo $front ?>/cadastro.php">Cadastro</a>
+        </div>
         </div>
     </nav>
+</header>
 
     <!-- Formulário de Cadastro -->
     <!--<div class="d-flex justify-content-center align-items-center vh-100"> -->
+<div class="d-flex justify-content-center align-items-center vh-100">
     <div class="container">
-        <div class="row justify-content-center">
+        <div class="row justify-content-center ">
             <div class="col-md-5">
                 <form action="" method="POST" class="p-4 border rounded shadow bg-white">
                     <h4 class="text-center mb-4">Cadastre-se</h4>
@@ -120,9 +123,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             </div>
         </div>
     </div>
-    </div>
-
-
+</div>
+        <div class="d-flex justify-content-center align-items-center vh-100">
+        <div class="container">
+            <div class="row justify-content-center">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 
