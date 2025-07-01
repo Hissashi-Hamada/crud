@@ -1,33 +1,6 @@
 <?php
 include '../backend/config.php';
 
-$nome = $_POST['nome'];
-$email = $_POST['email'];
-$senha = $_POST['senha'];
-
-// Verifica se a senha é a mesma (com o mesmo numero de caracteres, número, letra)
-if (strlen($senha) > 8 || !preg_match('/[A-Za-z]/', $senha) || !preg_match('/[0-9]/', $senha)) {
-    die("A senha não e a mesma snha de.");
-}
-
-// Inserir no banco
-$sql = "INSERT INTO usuarios (nome, email, senha) VALUES (?, ?, ?)";
-$stmt = $conn->prepare($sql);
-$stmt->bind_param("sss", $nome, $email, $senha);
-
-if ($stmt->execute()) {
-    
-} else {
-    echo "Erro ao cadastrar: " . $stmt->error;
-
-if (isset($_POST['botao_enviar'])) {
-    // Aqui pode ter uma verificação ou ação qualquer
-    if (/* condição para redirecionar */ true) {
-        header("Location: outra_pagina.php");
-        exit(); // Importante para parar o script após o redirecionamento
-    }
-}
-}
 
 
 // Recebe o valor do campo 'formulario' do POST
@@ -107,6 +80,10 @@ if ($login === "login") {
                             <input type="text" name="email" class="form-control" id="email_login" placeholder="Digite seu email">
                         </div>
 
+                        <div class="mb-3">
+                            <label class="form-label" for="senha_login">Senha:</label>
+                            <input type="password" name="senha" class="form-control" id="senha_login" placeholder="Digite sua senha">
+                        </div>
 
                         <div class="d-grid">
                             <button type="submit" class="btn btn-primary">Entrar</button>
