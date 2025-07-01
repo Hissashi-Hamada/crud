@@ -21,7 +21,7 @@ include '../backend/config.php';
             <a class="navbar-brand" href="<?php echo $front ?>/capa_do_site.php">Menu</a>
 
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <!-- <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     <li class="nav-item"><a class="nav-link active text-white" href="#">Menu</a></li>
                     <li class="nav-item"><a class="nav-link text-white" href="#">Link</a></li>
                     <li class="nav-item dropdown">
@@ -37,7 +37,7 @@ include '../backend/config.php';
                         </ul>
                     </li>
                 </ul>
-            </div>
+            </div> -->
             <div class="container mt-4" style="display: flex; align-content: center;
                                         flex-wrap: wrap;
                                         align-items: center;
@@ -76,7 +76,7 @@ include '../backend/config.php';
                     <h4>Estoque</h4>
                     <div class="d-flex justify-content-between mt-auto gap-2 flex-wrap">
                         <button class="btn btn-primary btn-sm">Editar</button>
-                        <button class="btn btn-secondary btn-sm">Visualizar</button>
+                        <button class="btn btn-secondary btn-sm">Informações</button>
                         <button class="btn btn-danger btn-sm">Excluir</button>
                     </div>
                 </div>
@@ -88,7 +88,7 @@ include '../backend/config.php';
                     <h4>Clientes</h4>
                     <div class="d-flex justify-content-between mt-auto gap-2 flex-wrap">
                         <button class="btn btn-primary btn-sm">Editar</button>
-                        <button class="btn btn-secondary btn-sm">Visualizar</button>
+                        <button class="btn btn-secondary btn-sm">Informações</button>
                         <button class="btn btn-danger btn-sm">Excluir</button>
                     </div>
                 </div>
@@ -100,7 +100,7 @@ include '../backend/config.php';
                     <h4>Fornecedores</h4>
                     <div class="d-flex justify-content-between mt-auto gap-2 flex-wrap">
                         <button class="btn btn-primary btn-sm">Editar</button>
-                        <button class="btn btn-secondary btn-sm">Visualizar</button>
+                        <button class="btn btn-secondary btn-sm">Informações</button>
                         <button class="btn btn-danger btn-sm">Excluir</button>
                     </div>
                 </div>
