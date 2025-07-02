@@ -12,16 +12,24 @@ include '../backend/config.php';
     <title>Document</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
 
+
+    <style>
+    .botao {
+        cursor: pointer;
+    }
+    </style>
+
+
 </head>
 
 <body>
 
-    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <div class="container-fluid">
             <a class="navbar-brand" href="<?php echo $front ?>/capa_do_site.php">Menu</a>
 
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                <!-- <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     <li class="nav-item"><a class="nav-link active text-white" href="#">Menu</a></li>
                     <li class="nav-item"><a class="nav-link text-white" href="#">Link</a></li>
                     <li class="nav-item dropdown">
@@ -37,7 +45,7 @@ include '../backend/config.php';
                         </ul>
                     </li>
                 </ul>
-            </div> -->
+            </div>
             <div class="container mt-4" style="display: flex; align-content: center;
                                         flex-wrap: wrap;
                                         align-items: center;
@@ -55,60 +63,60 @@ include '../backend/config.php';
 
         </div>
     </nav>
-<section>
-    <div class="container mt-4">
-        <div class="row g-4">
-            <!-- Card: Produtos -->
-            <div class="col-12 col-sm-6 col-md-4 col-lg-3">
-                <div class="card p-3 h-100" style="min-height: 200px;">
-                    <h4>Produtos</h4>
-                    <div class="d-flex justify-content-between mt-auto gap-2 flex-wrap">
-                        <button class="btn btn-primary btn-sm">Editar</button>
-                        <button class="btn btn-secondary btn-sm">Visualizar</button>
-                        <button class="btn btn-danger btn-sm">Excluir</button>
+    <section>
+        <div class="container mt-4">
+            <div class="row g-4">
+                <!-- Card: Produtos -->
+                <div class="col-12 col-sm-6 col-md-4 col-lg-3 botao" onclick="produtos()">
+                    <div class="card p-3 h-100" style="min-height: 200px; justify-content: center; ">
+                        <div class="caixa_de_sites" style="display: flex ;justify-content: center; align-items: center; flex-direction: row;">
+                            <h4>Produtos</h4>
+                        </div>
                     </div>
                 </div>
-            </div>
 
-            <!-- Card: Estoque -->
-            <div class="col-12 col-sm-6 col-md-4 col-lg-3">
-                <div class="card p-3 h-100" style="min-height: 200px;">
-                    <h4>Estoque</h4>
-                    <div class="d-flex justify-content-between mt-auto gap-2 flex-wrap">
-                        <button class="btn btn-primary btn-sm">Editar</button>
-                        <button class="btn btn-secondary btn-sm">Informações</button>
-                        <button class="btn btn-danger btn-sm">Excluir</button>
+                <!-- Card: Estoque -->
+                <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+                    <div class="card p-3 h-100 botao" style="min-height: 200px;">
+                        <div class="caixa_de_sites" style="display: flex ;justify-content: center; align-items: center; flex-direction: row;">
+                            <h4>Estoque</h4>
+                        </div>
+                        <div class="d-flex justify-content-between mt-auto gap-2 flex-wrap">
+                        </div>
                     </div>
                 </div>
-            </div>
 
-            <!-- Card: Clientes -->
-            <div class="col-12 col-sm-6 col-md-4 col-lg-3">
-                <div class="card p-3 h-100" style="min-height: 200px;">
-                    <h4>Clientes</h4>
-                    <div class="d-flex justify-content-between mt-auto gap-2 flex-wrap">
-                        <button class="btn btn-primary btn-sm">Editar</button>
-                        <button class="btn btn-secondary btn-sm">Informações</button>
-                        <button class="btn btn-danger btn-sm">Excluir</button>
+                <!-- Card: Clientes -->
+                <div class="col-12 col-sm-6 col-md-4 col-lg-3 ">
+                    <div class="card p-3 h-100 botao" style="min-height: 200px;">
+                        <div class="caixa_de_sites" style="display: flex ;justify-content: center; align-items: center; flex-direction: row;">
+                            <h4>Clientes</h4>
+                        </div>
+                        <div class="d-flex justify-content-between mt-auto gap-2 flex-wrap">
+                        </div>
                     </div>
                 </div>
-            </div>
 
-            <!-- Card: Fornecedores -->
-            <div class="col-12 col-sm-6 col-md-4 col-lg-3">
-                <div class="card p-3 h-100" style="min-height: 200px;">
-                    <h4>Fornecedores</h4>
-                    <div class="d-flex justify-content-between mt-auto gap-2 flex-wrap">
-                        <button class="btn btn-primary btn-sm">Editar</button>
-                        <button class="btn btn-secondary btn-sm">Informações</button>
-                        <button class="btn btn-danger btn-sm">Excluir</button>
+                <!-- Card: Fornecedores -->
+                <div class="col-12 col-sm-6 col-md-4 col-lg-3 ">
+                    <div class="card p-3 h-100 botao" style="min-height: 200px;">
+                        <div class="caixa_de_sites" style="display: flex ;justify-content: center; align-items: center; flex-direction: row;">
+                            <h4>Fornecedores</h4>
+                        </div>
+                        <div class="d-flex justify-content-between mt-auto gap-2 flex-wrap">
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-</section>
+    </section>
 
+
+    <script>
+    function produtos() {
+        window.location.href = "../frontend/aba_produto.php";
+    }
+    </script>
 
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"></script>

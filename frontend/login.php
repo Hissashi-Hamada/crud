@@ -58,10 +58,13 @@ if ($login === "login") {
         <div class="container-fluid">
             <a class="navbar-brand" href="<?php echo $front ?>/capa_do_site.php">Menu</a>
 
-    <div class="container mt-4" style="display: flex; align-content: center; flex-wrap: wrap; align-items: center; justify-content: flex-end; ">
-        <a class="btn btn-primary me-2" style="border: 1px solid white;" href="<?php echo $front ?>/login.php">Login</a>
-        <a class="btn btn-success"  style="border: 1px solid white;"  href="<?php echo $front ?>/cadastro.php">Cadastro</a>
-    </div>
+            <div class="container mt-4"
+                style="display: flex; align-content: center; flex-wrap: wrap; align-items: center; justify-content: flex-end; ">
+                <a class="btn btn-primary me-2" style="border: 1px solid white;"
+                    href="<?php echo $front ?>/login.php">Login</a>
+                <a class="btn btn-success" style="border: 1px solid white;"
+                    href="<?php echo $front ?>/cadastro.php">Cadastro</a>
+            </div>
         </div>
     </nav>
 
@@ -77,12 +80,14 @@ if ($login === "login") {
 
                         <div class="mb-3">
                             <label class="form-label" for="email_login">email:</label>
-                            <input type="text" name="email" class="form-control" id="email_login" placeholder="Digite seu email">
+                            <input type="text" name="email" class="form-control" id="email_login"
+                                placeholder="Digite seu email">
                         </div>
 
                         <div class="mb-3">
                             <label class="form-label" for="senha_login">Senha:</label>
-                            <input type="password" name="senha" class="form-control" id="senha_login" placeholder="Digite sua senha">
+                            <input type="password" name="senha" class="form-control" id="senha_login"
+                                placeholder="Digite sua senha">
                         </div>
 
                         <div class="d-grid">
