@@ -10,8 +10,8 @@ $dbname = "seu_banco_de_dados"; // O nome do seu banco de dados
 $pdo = new mysqli($servername, $username, $password, $dbname);
 
 // Verifica a conexão
-if ($conn->connect_error) {
-    die("Falha na conexão: " . $conn->connect_error);
+if ($pdo->connect_error) {
+    die("Falha na conexão: " . $pdo->connect_error);
 }
 
 // Dados a serem inseridos (substitua com os dados que você quer adicionar)
@@ -21,10 +21,10 @@ $email = "exemplo@email.com";
 // Prepara e executa a declaração SQL
 $sql = "INSERT INTO sua_tabela (nome, email) VALUES ('$nome', '$email')";
 
-if ($conn->query($sql) === TRUE) {
+if ($pdo->query($sql) === TRUE) {
     echo "Novo registro criado com sucesso!";
 } else {
-    echo "Erro: " . $sql . "<br>" . $conn->error;
+    echo "Erro: " . $sql . "<br>" . $pdo->error;
 }
 
 // Fecha a conexão

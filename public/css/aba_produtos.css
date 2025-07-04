@@ -1,0 +1,37 @@
+.centralizada {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+/* Posiciona a tabela no centro absoluto da tela */
+.tabela-produtos {
+    position: absolute;
+    top: 50%; 
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 90%;
+    max-width: 900px;
+    background-color: #fff;
+    border: 2px solid #000;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+    padding: 20px;
+    z-index: 1000;
+    overflow: auto;
+}
+
+/* Estilo da tabela */
+.tabela-produtos table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.tabela-produtos th, .tabela-produtos td {
+    padding: 10px;
+    border: 1px solid #ccc;
+}
+
+.tabela-produtos th {
+    background-color: #dc3545; /* vermelho Bootstrap */
+    color: white;
+}

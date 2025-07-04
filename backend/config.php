@@ -11,6 +11,10 @@ try {
     die("Erro na conexão: " . $erro->getMessage());
 }
 
-    $front = '../../crud/frontend';
-    $back = '../../crud/backend';
+// Caminho absoluto da raiz do CRUD
+$basePath = realpath(__DIR__ . '/../../crud');
+
+$front = $basePath . '/frontend';
+$back = $basePath . '/backend';
+$public = $basePath . '/public';
 ?>
