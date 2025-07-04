@@ -1,64 +1,69 @@
 <?php
+session_start();
 include '../backend/config.php';
 
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    if (isset($_POST['formulario']) && $_POST['formulario'] === 'cadastro') {
+$erro = '';
 
-        $nome = $_POST['nome'] ?? '';
-        $email = $_POST['email'] ?? '';
-        $senha = $_POST['senha'] ?? '';
-        $confirmar = $_POST['confirmar_senha'] ?? '';
+if ($_SERVER["REQUEST_METHOD"] == "POST" && ($_POST['formulario'] ?? '') === 'cadastro') {
 
-        if ($senha !== $confirmar) {    
-            die("❌ As senhas não coincidem.");
-        }
+    $nome = trim($_POST['nome'] ?? '');
+    $email = trim($_POST['email'] ?? '');
+    $senha = $_POST['senha'] ?? '';
+    $confirmar = $_POST['confirmar_senha'] ?? '';
 
-        if (strlen($senha) < 6 || !preg_match('/[A-Za-z]/', $senha) || !preg_match('/[0-9]/', $senha)) {
-            die("❌ A senha deve ter pelo menos 6 caracteres, incluindo letras e números.");
-        }
-
+    if (empty($nome) || empty($email) || empty($senha) || empty($confirmar)) {
+        $erro = "Preencha todos os campos.";
+    } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        $erro = "E-mail inválido.";
+    } elseif ($senha !== $confirmar) {
+        $erro = "As senhas não coincidem.";
+    } elseif (strlen($senha) < 6 || !preg_match('/[A-Za-z]/', $senha) || !preg_match('/[0-9]/', $senha)) {
+        $erro = "A senha deve ter pelo menos 6 caracteres, incluindo letras e números.";
+    } else {
         try {
-            // Verifica se o e-mail já está cadastrado
             $verifica = $pdo->prepare("SELECT id FROM usuarios WHERE email = :email");
             $verifica->bindParam(':email', $email);
             $verifica->execute();
 
             if ($verifica->rowCount() > 0) {
-                die("❌ Este e-mail já está cadastrado.");
-            }
-
-            // Inserir no banco
-            $sql = "INSERT INTO usuarios (nome, email, senha) VALUES (:nome, :email, :senha)";
-            $stmt = $pdo->prepare($sql);
-            $stmt->bindParam(':nome', $nome);
-            $stmt->bindParam(':email', $email);
-            $stmt->bindParam(':senha', $senha);
-
-            if ($stmt->execute()) {
-
-                $PegarUsuarioCadastrado = $pdo->prepare("SELECT * FROM usuarios WHERE email = :email");
-                $PegarUsuarioCadastrado->bindParam(':email', $email);
-                $PegarUsuarioCadastrado->execute();
-
-                $resultado = $PegarUsuarioCadastrado->fetch(PDO::FETCH_ASSOC);
-                session_start(); // Inicia sessão se ainda não estiver iniciada
-                $_SESSION = $resultado;
-
-
-                header('Location: capa_do_site.php'); // Redireciona para a página desejada
-                exit(); // Finaliza o script após o redirecionamento
+                $erro = "Este e-mail já está cadastrado.";
             } else {
-                echo "❌ Erro ao cadastrar.";
+                $senhaHash = password_hash($senha, PASSWORD_DEFAULT);
+
+                $sql = "INSERT INTO usuarios (nome, email, senha) VALUES (:nome, :email, :senha)";
+                $stmt = $pdo->prepare($sql);
+                $stmt->bindParam(':nome', $nome);
+                $stmt->bindParam(':email', $email);
+                $stmt->bindParam(':senha', $senhaHash);
+
+                if ($stmt->execute()) {
+                    $PegarUsuario = $pdo->prepare("SELECT * FROM usuarios WHERE email = :email");
+                    $PegarUsuario->bindParam(':email', $email);
+                    $PegarUsuario->execute();
+                    $_SESSION = $PegarUsuario->fetch(PDO::FETCH_ASSOC);
+
+                    header('Location: pagina_inicial.php');
+                    exit();
+                } else {
+                    $erro = "Erro ao cadastrar usuário.";
+                }
             }
         } catch (PDOException $e) {
-            echo "❌ Erro no banco de dados: " . $e->getMessage();
+            $erro = "Erro de banco de dados. Tente novamente.";
+            // error_log($e->getMessage());
         }
     }
 }
 ?>
 
+
 <!DOCTYPE html>
 <html lang="pt-br">
+
+<?php if (!empty($erro)): ?>
+<div class="alert alert-danger"><?= htmlspecialchars($erro) ?></div>
+<?php endif; ?>
+
 
 <head>
     <meta charset="UTF-8">
@@ -123,7 +128,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         </div>
 
                         <div class="mt-3 text-center">
-                            <a href="<?php echo $front ?>/login.php">Já tem uma conta? Faça login</a>
+                            <a href="<?php echo $front ?>http://localhost/crud/frontend/login.php">Já tem uma conta? Faça login</a>
                         </div>
                     </form>
                 </div>
