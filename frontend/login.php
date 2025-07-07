@@ -44,11 +44,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($_POST['formulario'] ?? '') === 'l
 <body>
     <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
         <div class="container-fluid">
-            <a class="navbar-brand" href="/crud/capa_do_site.php">Menu</a>
-            <div class="d-flex">
-                <a class="btn btn-light me-2" href="/crud/login.php">Login</a>
-                <a class="btn btn-success" href="/crud/cadastro.php">Cadastro</a>
-            </div>
+                <a class="navbar-brand text-white" href="<?php echo $front ?>/pagina_inicial.php">Menu</a>
         </div>
     </nav>
 
@@ -77,8 +73,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($_POST['formulario'] ?? '') === 'l
                     <button type="submit" class="btn btn-primary">Entrar</button>
                 </div>
 
-                <div class="mt-3 text-center">
-                    <a href="/crud/cadastro.php">Não tem conta? Cadastre-se</a>
+                <div class="mt-3 text-center">,
+                    <a href="<?php echo $front ?>/cadastro.php">Não tem conta? Cadastre-se</a>
                 </div>
             </form>
         </div>

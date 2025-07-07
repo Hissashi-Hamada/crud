@@ -75,21 +75,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && ($_POST['formulario'] ?? '') === 'ca
 <body>
 
     <header>
-        <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
-            <div class="container-fluid">
-                <a class="navbar-brand" href="<?php echo $front ?>/capa_do_site.php">Menu</a>
-                <div class="container mt-4"
-                    style="display: flex; align-content: center; flex-wrap: wrap; align-items: center; justify-content: flex-end; ">
-                    <a class="btn btn-primary me-2" style="border: 1px solid white;"
-                        href="<?php echo $front ?>/login.php">Login</a>
-                    <a class="btn btn-success" style="border: 1px solid white;"
-                        href="<?php echo $front ?>/cadastro.php">Cadastro</a>
-                </div>
-            </div>
-        </nav>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+                <a class="navbar-brand text-white" href="<?php echo $front ?>/pagina_inicial.php">Menu</a>
+        </div>
+    </nav>
     </header>
 
-    <!-- Formulário de Cadastro -->
     <!--<div class="d-flex justify-content-center align-items-center vh-100"> -->
     <div class="d-flex justify-content-center align-items-center vh-100">
         <div class="container">
@@ -128,7 +119,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && ($_POST['formulario'] ?? '') === 'ca
                         </div>
 
                         <div class="mt-3 text-center">
-                            <a href="<?php echo $front ?>http://localhost/crud/frontend/login.php">Já tem uma conta? Faça login</a>
+                            <a href="<?php echo $front ?>/login.php">Já tem uma conta?
+                                Faça login</a>
                         </div>
                     </form>
                 </div>

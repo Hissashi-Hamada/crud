@@ -2,9 +2,9 @@
 include '../backend/config.php';
 // Configurações do banco de dados (substitua com suas informações)
 $servername = "localhost"; // Ou o endereço do seu servidor de banco de dados
-$username = "seu_usuario"; // Seu nome de usuário do banco de dados
-$password = "sua_senha"; // Sua senha do banco de dados
-$dbname = "seu_banco_de_dados"; // O nome do seu banco de dados
+$username = "root"; // Seu nome de usuário do banco de dados
+$password = ""; // Sua senha do banco de dados
+$dbname = "crud"; // O nome do seu banco de dados
 
 // Cria a conexão
 $pdo = new mysqli($servername, $username, $password, $dbname);
