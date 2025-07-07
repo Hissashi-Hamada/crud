@@ -10,17 +10,17 @@ include '../backend/config.php';
     <title>Menu Principal</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet" />
     <style>
-    .botao {
-        cursor: pointer;
-    }
+        .botao {
+            cursor: pointer;
+        }
 
-    .caixa_de_sites {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        flex-direction: row;
-        height: 100%;
-    }
+        .caixa_de_sites {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: row;
+            height: 100%;
+        }
     </style>
 </head>
 
@@ -75,52 +75,27 @@ include '../backend/config.php';
                     </div>
                 </div>
 
+                <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+                    <div class="card p-3 h-100 botao" style="min-height: 200px;" onclick="clientes()">
+                        <div class="caixa_de_sites">
+                            <h4>Clientes</h4>
+                        </div>
+                    </div>
+                </div>
 
-                <!-- <div class="col-12 col-sm-6 col-md-4 col-lg-3"> -->
-                    <!-- <div class="card p-3 h-100 botao" style="min-height: 200px;" onclick="estoque()"> -->
-                        <!-- <div class="caixa_de_sites"> -->
-                            <!-- <h4>Estoque</h4> -->
-                        <!-- </div> -->
-                    <!-- </div> -->
-                <!-- </div> -->
-<!--  -->
-<!--  -->
-                <!-- <div class="col-12 col-sm-6 col-md-4 col-lg-3"> -->
-                    <!-- <div class="card p-3 h-100 botao" style="min-height: 200px;" onclick="clientes()"> -->
-                        <!-- <div class="caixa_de_sites"> -->
-                            <!-- <h4>Clientes</h4> -->
-                        <!-- </div> -->
-                    <!-- </div> -->
-                <!-- </div> -->
-<!--  -->
-<!--  -->
-                <!-- <div class="col-12 col-sm-6 col-md-4 col-lg-3"> -->
-                    <!-- <div class="card p-3 h-100 botao" style="min-height: 200px;" onclick="fornecedores()"> -->
-                        <!-- <div class="caixa_de_sites"> -->
-                            <!-- <h4>Fornecedores</h4> -->
-                        <!-- </div> -->
-                    <!-- </div> -->
-                <!-- </div> -->
-            <!-- </div> -->
-        <!-- </div> -->
+            </div>
+        </div>
     </section>
 
     <script>
-    function produtos() {
-        window.location.href = "<?= $front ?>/aba_produto.php";
-    }
+        function produtos() {
+            window.location.href = "<?= $front ?>/aba_produto.php";
+        }
 
-    function estoque() {
-        window.location.href = "<?= $front ?>/aba_estoque.php";
-    }
+        function clientes() {
+            window.location.href = "<?= $front ?>/cliente.php";
+        }
 
-    function clientes() {
-        window.location.href = "<?= $front ?>/aba_clientes.php";
-    }
-
-    function fornecedores() {
-        window.location.href = "<?= $front ?>/aba_fornecedores.php";
-    }
     </script>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"></script>
