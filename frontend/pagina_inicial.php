@@ -1,5 +1,12 @@
 <?php
 include '../backend/config.php';
+session_start();
+
+
+if ($_SESSION['id'] == null) {
+    header('Location: login.php');
+}
+
 ?>
 <!DOCTYPE html>
 <html lang="pt-br">
@@ -54,12 +61,17 @@ include '../backend/config.php';
                         </ul>
                     </li> -->
                 </ul>
-
-                <div class="d-flex gap-2">
-                    <a class="btn btn-primary" style="border: 1px solid white;" href="<?= $front ?>/login.php">Login</a>
-                    <a class="btn btn-success" style="border: 1px solid white;"
-                        href="<?= $front ?>/cadastro.php">Cadastro</a>
-                </div>
+                <?php if (($_SESSION['id'] == null)) { ?>
+                    <div class="d-flex gap-2">
+                        <a class="btn btn-primary" style="border: 1px solid white;" href="<?= $front ?>/login.php">Login</a>
+                        <a class="btn btn-success" style="border: 1px solid white;" href="<?= $front ?>/cadastro.php">Cadastro</a>
+                    </div>
+                <?php } else { ?>
+                    <div class="d-flex gap-2">
+                        <h4 class="text-white"><?php echo $_SESSION['nome'] ?></h4>
+                        <a class="btn btn-primary" style="border: 1px solid white;" href="<?= $back ?>/deslogar.php">Sair</a>
+                    </div>
+                <?php } ?>
             </div>
         </div>
     </nav>
@@ -95,7 +107,6 @@ include '../backend/config.php';
         function clientes() {
             window.location.href = "<?= $front ?>/cliente.php";
         }
-
     </script>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"></script>

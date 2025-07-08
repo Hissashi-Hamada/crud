@@ -19,7 +19,7 @@ $nome = "Exemplo de Nome";
 $email = "exemplo@email.com";
 
 // Prepara e executa a declaração SQL
-$sql = "INSERT INTO sua_tabela (nome, email) VALUES ('$nome', '$email')";
+$sql = "INSERT INTO cliente (nome, email) VALUES ('$nome', '$email')";
 
 if ($pdo->query($sql) === TRUE) {
     echo "Novo registro criado com sucesso!";
@@ -29,7 +29,31 @@ if ($pdo->query($sql) === TRUE) {
 
 // Fecha a conexão
 $pdo->close();
+
+include '../backend/config.php';
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['id'])) {
+    $id = $_POST['id'];
+
+    $sql = "DELETE FROM cliente WHERE id = :id";
+    $stmt = $pdo->prepare($sql);
+    $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+
+    if ($stmt->execute()) {
+        header("Location:  ../frontend/cliente.php?msg=excluido");
+        exit;
+    } else {
+        echo "Erro ao excluir o cliente.";
+    }
+} else {
+    echo "Requisição inválida.";
+    
+}
 ?>
+    <?php if (isset($_GET['msg']) && $_GET['msg'] === 'excluido'): ?>
+    <div class="alert alert-success">cliente excluído com sucesso!</div>
+    <?php endif; ?>
+
 <!DOCTYPE html>
 <html lang="en">
 

@@ -1,6 +1,8 @@
 <?php
 include '../backend/config.php';
 
+session_start();
+
 $sql = "SELECT * FROM produtos";
 $stmt = $pdo->prepare($sql);
 $stmt->execute();
@@ -68,41 +70,38 @@ if ($_POST) {
 <body>
 
     <header>
-        <nav class="navbar navbar-expand-lg navbar-danger bg-danger">
+        <nav class="navbar navbar-expand-lg navbar-dark bg-success">
             <div class="container-fluid">
-                <a class="navbar-brand text-white" href="<?php echo $front ?>/pagina_inicial.php">Menu</a>
+                <a class="navbar-brand" href="<?= $front ?>/pagina_inicial.php">Menu</a>
 
-                <!-- <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+                    aria-expanded="false" aria-label="Alternar navegação">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                        <li class="nav-item"><a class="nav-link active text-white" href="#">Menu</a></li>
-                        <li class="nav-item"><a class="nav-link text-white" href="#">Link</a></li>
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle text-white" href="#" data-bs-toggle="dropdown">Mostrar
-                                mais</a>
-                            <ul class="dropdown-menu">
-                                <li><a class="dropdown-item" href="#">Ação</a></li>
-                                <li><a class="dropdown-item" href="#">Outra Ação</a></li>
-                                <li>
-                                    <hr class="dropdown-divider">
-                                </li>
-                                <li><a class="dropdown-item" href="#">Algo a Mais</a></li>
-                            </ul> -->
-                </li>
-                </ul>
-            </div>
-
-            <div class="d-flex gap-2">
-                <a class="btn btn-primary" href="<?php echo $front ?>/login.php">Login</a>
-                <a class="btn btn-success" href="<?php echo $front ?>/cadastro.php">Cadastro</a>
-            </div>
-
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
-                data-bs-target="#navbarSupportedContent">
-                <span class="navbar-toggler-icon"></span>
-            </button>
+                    </ul>
+                    <?php if (($_SESSION['id'] == null)) { ?>
+                    <div class="d-flex gap-2">
+                        <a class="btn btn-primary" style="border: 1px solid white;"
+                            href="<?= $front ?>/login.php">Login</a>
+                        <a class="btn btn-success" style="border: 1px solid white;"
+                            href="<?= $front ?>/cadastro.php">Cadastro</a>
+                    </div>
+                    <?php } else { ?>
+                    <div class="d-flex gap-2">
+                        <h4 class="text-light"><?php echo $_SESSION['nome'] ?></h4>
+                        <a class="btn btn-primary" style="border: 1px solid white;"
+                            href="<?= $back ?>/deslogar.php">Sair</a>
+                    </div>
+                    <?php } ?>
+                </div>
             </div>
         </nav>
     </header>
+
 
     <section class="py-5">
         <div class="container">
@@ -118,7 +117,7 @@ if ($_POST) {
 
             <div class="table-responsive">
                 <table class="table table-striped table-bordered align-middle">
-                    <thead class="table-dark">
+                    <thead class="table-dar">
                         <tr>
                             <th>ID</th>
                             <th>Produto</th>
@@ -130,32 +129,32 @@ if ($_POST) {
                     </thead>
                     <tbody>
                         <?php foreach ($produtos as $produto): ?>
-                            <tr id="produto-<?= $produto['id'] ?>">
-                                <td><?= $produto['id'] ?></td>
-                                <td><?= htmlspecialchars($produto['nome']) ?></td>
-                                <td><?= $produto['estoque'] ?></td>
-                                <td><?= number_format($produto['preco'], 2, ',', '.') ?></td>
-                                <td><?= $produto['disponivel'] ? 'Sim' : 'Não' ?></td>
-                                <td class="d-flex gap-2">
-                                    <!-- Botão Editar -->
-                                    <button type="button" class="btn btn-warning" data-bs-toggle="modal"
-                                        data-bs-target="#exampleModal"
-                                        onclick='editar_produto(<?php echo json_encode($produto); ?>)'>
-                                        Editar
-                                    </button>
+                        <tr id="produto-<?= $produto['id'] ?>">
+                            <td><?= $produto['id'] ?></td>
+                            <td><?= htmlspecialchars($produto['nome']) ?></td>
+                            <td><?= $produto['estoque'] ?></td>
+                            <td><?= number_format($produto['preco'], 2, ',', '.') ?></td>
+                            <td><?= $produto['disponivel'] ? 'Sim' : 'Não' ?></td>
+                            <td class="d-flex gap-2">
+                                <!-- Botão Editar -->
+                                <button type="button" class="btn btn-warning" data-bs-toggle="modal"
+                                    data-bs-target="#exampleModal"
+                                    onclick='editar_produto(<?php echo json_encode($produto); ?>)'>
+                                    Editar
+                                </button>
 
-                                    <form method="post" action="../backend/deletar.php"
-                                        onsubmit="return confirmarExclusao();">
-                                        <input type="hidden" name="id" value="<?= $produto['id'] ?>">
-                                        <button class="btn btn-danger">Excluir</button>
-                                    </form>
-                                </td>
-                            </tr>
+                                <form method="post" action="../backend/deletar.php"
+                                    onsubmit="return confirmarExclusao();">
+                                    <input type="hidden" name="id" value="<?= $produto['id'] ?>">
+                                    <button class="btn btn-danger">Excluir</button>
+                                </form>
+                            </td>
+                        </tr>
                         <?php endforeach; ?>
                         <?php if (empty($produtos)): ?>
-                            <tr>
-                                <td colspan="6" class="text-center">Nenhum produto encontrado.</td>
-                            </tr>
+                        <tr>
+                            <td colspan="6" class="text-center">Nenhum produto encontrado.</td>
+                        </tr>
                         <?php endif; ?>
                     </tbody>
                 </table>
@@ -201,7 +200,7 @@ if ($_POST) {
                             Botão de envio
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                <button type="submit" class="btn btn-primary">Save changes</button>
+                                <button type="submit" class="btn btn-primary" >Save changes</button>
                             </div>
                         </form>
                     </div>
@@ -214,30 +213,30 @@ if ($_POST) {
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        function confirmarExclusao() {
-            return confirm("Tem certeza que deseja excluir este produto?");
-        }
+    function confirmarExclusao() {
+        return confirm("Tem certeza que deseja excluir este produto?");
+    }
 
-        function adicionar_produto() {
-            document.getElementById('exampleModalLabel').innerHTML = 'Adicionar produto'
-            document.getElementById('id').value = ''
-            document.getElementById('nome').value = ''
-            document.getElementById('preco').value = ''
-            document.getElementById('estoque').value = ''
-            document.getElementById('disponivel').checked = ''
-        }
+    function adicionar_produto() {
+        document.getElementById('exampleModalLabel').innerHTML = 'Adicionar produto'
+        document.getElementById('id').value = ''
+        document.getElementById('nome').value = ''
+        document.getElementById('preco').value = ''
+        document.getElementById('estoque').value = ''
+        document.getElementById('disponivel').checked = ''
+    }
 
-        function editar_produto(produto) {
-            console.log(produto); // objeto JS com todas as propriedades
-            // alert('Produto: ' + produto.nome + ', Preço: ' + produto.preco);
-            // aqui pode preencher seu modal, etc.
-            document.getElementById('exampleModalLabel').innerHTML = 'Editar produto'
-            document.getElementById('nome').value = produto.nome
-            document.getElementById('id').value = produto.id
-            document.getElementById('preco').value = produto.preco
-            document.getElementById('estoque').value = produto.estoque
-            document.getElementById('disponivel').checked = produto.disponivel ? 1 : 0
-        }
+    function editar_produto(produto) {
+        console.log(produto); // objeto JS com todas as propriedades
+        // alert('Produto: ' + produto.nome + ', Preço: ' + produto.preco);
+        // aqui pode preencher seu modal, etc.
+        document.getElementById('exampleModalLabel').innerHTML = 'Editar produto'
+        document.getElementById('nome').value = produto.nome
+        document.getElementById('id').value = produto.id
+        document.getElementById('preco').value = produto.preco
+        document.getElementById('estoque').value = produto.estoque
+        document.getElementById('disponivel').checked = produto.disponivel ? 1 : 0
+    }
     </script>
 </body>
 
