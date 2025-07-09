@@ -12,7 +12,6 @@ $cliente = $stmt->fetchAll(PDO::FETCH_ASSOC); // pegar os dados
 // Captura dos dados do request (caso queira usar),
 $nome = $_REQUEST['nome'] ?? '';
 $email = $_REQUEST['email'] ?? '';
-$senha = $_REQUEST['senha'] ?? '';
 $telefone = $_REQUEST['telefone'] ?? '';
 $data_nacimento = $_REQUEST['data_nacimeno'] ?? '';
 
@@ -21,58 +20,51 @@ $_SESSION['cliente'] = [
     'nome' => $nome,
     'email' => $email
 ];
-
-
-
-
 $sql = "SELECT * FROM cliente";
 $stmt = $pdo->prepare($sql);
 $stmt->execute();
 $clientes = $stmt->fetchAll(PDO::FETCH_ASSOC);
-print_r($clientes);
-
-if ($_POST) {
 
 
-    if ($_POST['id']) {
-        $id = $_POST['id'];
-        $nome = $_POST['nome'] ?? '';
-        $email = $_POST['email'] ?? '';
-        $telefone = $_POST['telefone'] ?? '';
-        $data_nacimento = $_POST['data_nacimeno'] ?? '';
+// print_r($_POST); 
+// die;
 
-        $sql = "UPDATE cliente 
-            SET nome = :nome, preco = :preco, estoque = :estoque, disponivel = :disponivel 
-            WHERE id = :id";
 
-        $stmt->bindParam(':id', $id);
-        $stmt = $pdo->prepare($sql);
-        $stmt->bindParam(':nome', $nome);
-        $stmt->bindParam(':email', $email);
-        $stmt->bindParam(':telefone', $telefone);
-        $stmt->bindParam(':data_nacimento', $data_nacimento);
-
-        if ($stmt->execute()) {
-            header('Location: cliente.php');
-            print_r('echo');
-            exit();
-        }
-    }
-
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $id = $_POST['id'] ?? null;
     $nome = $_POST['nome'] ?? '';
     $email = $_POST['email'] ?? '';
     $telefone = $_POST['telefone'] ?? '';
-    $data_nacimento = $_POST['data_nacimeno'] ?? '';
-    // print_r(['nome' => $nome,'preco' => $preco,'estoque' => $estoque,'disponivel' => $disponivel]) ;
+    $data_nascimento = $_POST['data_nascimento'] ?? '';
 
-    $sql = "INSERT INTO cliente (nome, senha, telefone, data_nacimeno) VALUES (:nome, :senha, :telefone, :data_nacimeno)";
+    // Verifica duplicidade só no INSERT
+    if (!$id) {
+        $stmt = $pdo->prepare("SELECT COUNT(*) FROM cliente WHERE email = :email");
+        $stmt->bindParam(':email', $email);
+        $stmt->execute();
+        if ($stmt->fetchColumn() > 0) {
+            die("Erro: E-mail já cadastrado.");
+        }
+
+        $sql = "INSERT INTO cliente (nome, email, telefone, data_nascimento) 
+                VALUES (:nome, :email, :telefone, :data_nascimento)";
+    } else {
+        $sql = "UPDATE cliente 
+                SET nome = :nome, email = :email, telefone = :telefone, data_nascimento = :data_nascimento 
+                WHERE id = :id";
+    }
+
     $stmt = $pdo->prepare($sql);
     $stmt->bindParam(':nome', $nome);
     $stmt->bindParam(':email', $email);
     $stmt->bindParam(':telefone', $telefone);
-    $stmt->bindParam(':data_nacimeno', $data_nacimeno);
+    $stmt->bindParam(':data_nascimento', $data_nascimento);
+    if ($id) {
+        $stmt->bindParam(':id', $id);
+    }
 
     $stmt->execute();
+    header('Location: cliente.php');
     exit;
 }
 ?>
@@ -145,38 +137,38 @@ if ($_POST) {
                             <th>Nome</th>
                             <th>Email</th>
                             <th>Telefone</th>
-                            <th>Data_Nacimento</th>
+                            <th>Data Nacimento</th>
                             <th>Ações</th>
                         </tr>
                     </thead>
                     <tbody>
                         <?php foreach ($clientes as $cliente): ?>
-                        <tr id="clientes-<?= $clientes['id'] ?>">
-                            <td><?= $cliente['id'] ?></td>
-                            <td><?= htmlspecialchars($cliente['nome']) ?></td>
-                            <td><?= $cliente['email'] ?></td>
-                            <td><?= $cliente['telefone'] ?></td>
-                            <td><?= $cliente['data_nascimento'] ?></td>
-                            <td class="d-flex gap-2">
-                                <!-- Botão Editar -->
-                                <button type="button" class="btn btn-warning" data-bs-toggle="modal"
-                                    data-bs-target="#exampleModal"
-                                    onclick='editar_clientes(<?php echo json_encode($cliente); ?>)'>
-                                    Editar
-                                </button>
+                            <tr id="cliente-<?= $cliente['id'] ?>">
+                                <td><?= $cliente['id'] ?></td>
+                                <td><?= htmlspecialchars($cliente['nome']) ?></td>
+                                <td><?= $cliente['email'] ?></td>
+                                <td><?= $cliente['telefone'] ?></td>
+                                <td><?= $cliente['data_nascimento'] ?></td>
+                                <td class="d-flex gap-2">
+                                    <!-- Botão Editar -->
+                                    <button type="button" class="btn btn-warning" data-bs-toggle="modal"
+                                        data-bs-target="#exampleModal"
+                                        onclick='editar_cliente(<?php echo json_encode($cliente); ?>)'>
+                                        Editar
+                                    </button>
 
-                                <form method="post" action="../backend/deletar.php"
-                                    onsubmit="return confirmarExclusao();">
-                                    <input type="hidden" name="id" value="<?= $cliente['id'] ?>">
-                                    <button class="btn btn-danger">Excluir</button>
-                                </form>
-                            </td>
-                        </tr>
+                                    <form method="post" action="../backend/add_exclude_cliente.php"
+                                        onsubmit="return confirmarExclusao();">
+                                        <input type="hidden" name="id" value="<?= $cliente['id'] ?>">
+                                        <button class="btn btn-danger">Excluir</button>
+                                    </form>
+                                </td>
+                            </tr>
                         <?php endforeach; ?>
                         <?php if (empty($cliente)): ?>
-                        <tr>
-                            <td colspan="6" class="text-center">Nenhum cliente encontrado.</td>
-                        </tr>
+                            <tr>
+                                <td colspan="6" class="text-center">Nenhum cliente encontrado.</td>
+                            </tr>
                         <?php endif; ?>
                     </tbody>
                 </table>
@@ -203,19 +195,19 @@ if ($_POST) {
                             <!-- Preço -->
                             <div class="mb-3">
                                 <label for="preco" class="form-label">Email</label>
-                                <input type="email" step="0.01" class="form-control" id="preco" name="preco" required>
+                                <input type="email" step="0.01" class="form-control" id="email" name="email" required>
                             </div>
 
                             <!-- Estoque -->
                             <div class="mb-3">
                                 <label for="telefone" class="form-label">Telefone</label>
-                                <input type="int" class="form-control" id="estoque" name="estoque" required>
+                                <input type="int" class="form-control" id="telefone" name="telefone" required>
                             </div>
 
                             <!-- Estoque -->
                             <div class="mb-3">
-                                <label for="data_nacimento" class="form-label">data_nacimento</label>
-                                <input type="date" class="form-control" id="estoque" name="estoque" required>
+                                <label for="data_nascimento" class="form-label">Data de Nascimento</label>
+                                <input type="date" class="form-control" id="data_nascimento" name="data_nascimento" required>
                             </div>
 
                             Botão de envio
@@ -244,19 +236,18 @@ if ($_POST) {
             document.getElementById('nome').value = ''
             document.getElementById('email').value = ''
             document.getElementById('telefone').value = ''
-            document.getElementById('data_nacimento').checked = ''
+            document.getElementById('data_nacimento').value = ''
         }
 
         function editar_cliente(cliente) {
-            console.log(cliente); // objeto JS com todas as propriedades
-            // alert('cliente: ' + cliente.nome + ', Preço: ' + cliente.preco);
-            // aqui pode preencher seu modal, etc.
+            console.log(cliente); 
+
             document.getElementById('exampleModalLabel').innerHTML = 'Editar cliente'
             document.getElementById('id').value = cliente.id
             document.getElementById('nome').value = cliente.nome
             document.getElementById('email').value = cliente.email
             document.getElementById('telefone').value = cliente.telefone
-            document.getElementById('data_nacimento').checked = cliente.data_nacimento ? 1 : 0
+            document.getElementById('data_nascimento').value = cliente.data_nascimento 
         }
     </script>
 </body>

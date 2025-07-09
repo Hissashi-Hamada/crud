@@ -49,8 +49,10 @@ if ($_POST) {
     $stmt->bindParam(':estoque', $estoque);
     $stmt->bindParam(':disponivel', $disponivel);
 
-    $stmt->execute();
-    exit;
+    if ($stmt->execute()) {
+        header('Location: aba_produto.php');
+        exit();
+    }
 }
 
 
@@ -200,14 +202,13 @@ if ($_POST) {
                             Botão de envio
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                <button type="submit" class="btn btn-primary" >Save changes</button>
+                                <button type="submit" class="btn btn-primary">Save changes</button>
                             </div>
                         </form>
                     </div>
                 </div>
             </div>
         </div>
-
 
     </section>
 
