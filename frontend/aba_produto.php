@@ -1,7 +1,7 @@
 <?php
 include '../backend/config.php';
 
-session_start();
+include '../backend/verificacao.php';
 
 $sql = "SELECT * FROM produtos";
 $stmt = $pdo->prepare($sql);

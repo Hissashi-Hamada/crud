@@ -1,11 +1,6 @@
 <?php
 include '../backend/config.php';
-session_start();
-
-
-if ($_SESSION['id'] == null) {
-    header('Location: login.php');
-}
+include '../backend/verificacao.php';
 
 ?>
 <!DOCTYPE html>

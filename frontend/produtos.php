@@ -1,5 +1,6 @@
 <?php
 include '../backend/config.php';
+include '../backend/verificacao.php';
 $sql = "SELECT * FROM produtos";
 $result = $pdo->query($sql);
 ?>

@@ -1,13 +1,13 @@
 <?php
 include '../backend/config.php';
-session_start();
+include '../backend/verificacao.php';
 
-
-$sql = "SELECT * FROM cliente";
+$id_user = $_SESSION['id'];
+$sql = "SELECT * FROM cliente where id_user = $id_user";
 $stmt = $pdo->prepare($sql);  // preparar a query
 $stmt->execute();             // executar a query
 
-$cliente = $stmt->fetchAll(PDO::FETCH_ASSOC); // pegar os dados
+$clientes = $stmt->fetchAll(PDO::FETCH_ASSOC); // pegar os dados
 
 // Captura dos dados do request (caso queira usar),
 $nome = $_REQUEST['nome'] ?? '';
@@ -20,18 +20,21 @@ $_SESSION['cliente'] = [
     'nome' => $nome,
     'email' => $email
 ];
-$sql = "SELECT * FROM cliente";
-$stmt = $pdo->prepare($sql);
-$stmt->execute();
-$clientes = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 
-// print_r($_POST); 
+// $stmt = $pdo->prepare($sql);
+// $stmt->execute();
+// $clientes = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+// $sql1 = mysql_query("SELECT id FROM entrada ORDER BY id DESC WHERE placa = $placa LIMIT 1");
+
+//     print_r($sql);
 // die;
 
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $id = $_POST['id'] ?? null;
+    $id_user= $_POST['id_user'];
     $nome = $_POST['nome'] ?? '';
     $email = $_POST['email'] ?? '';
     $telefone = $_POST['telefone'] ?? '';
@@ -46,8 +49,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             die("Erro: E-mail já cadastrado.");
         }
 
-        $sql = "INSERT INTO cliente (nome, email, telefone, data_nascimento) 
-                VALUES (:nome, :email, :telefone, :data_nascimento)";
+        $sql = "INSERT INTO cliente (id_user, nome, email, telefone, data_nascimento) 
+                VALUES (:id_user, :nome, :email, :telefone, :data_nascimento)";
     } else {
         $sql = "UPDATE cliente 
                 SET nome = :nome, email = :email, telefone = :telefone, data_nascimento = :data_nascimento 
@@ -55,6 +58,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
     $stmt = $pdo->prepare($sql);
+    $stmt->bindParam(':id_user', $id_user);
     $stmt->bindParam(':nome', $nome);
     $stmt->bindParam(':email', $email);
     $stmt->bindParam(':telefone', $telefone);
@@ -186,6 +190,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         <form action="cliente.php" method="post">
 
                             <input id="id" type="hidden" name="id" value="">
+                            <input id="id" type="hidden" name="id_user" value="<?php echo $_SESSION['id'];?>">
                             <!-- Nome do Cliente -->
                             <div class="mb-3">
                                 <label for="nome" class="form-label">Nome do Cliente</label>
