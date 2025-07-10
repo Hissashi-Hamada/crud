@@ -28,7 +28,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && ($_POST['formulario'] ?? '') === 'ca
             if ($verifica->rowCount() > 0) {
                 $erro = "Este e-mail já está cadastrado.";
             } else {
-                // $senhaHash = password_hash($senha, PASSWORD_DEFAULT);
 
                 $sql = "INSERT INTO usuarios (nome, email, senha) VALUES (:nome, :email, :senha)";
                 $stmt = $pdo->prepare($sql);
@@ -50,7 +49,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && ($_POST['formulario'] ?? '') === 'ca
             }
         } catch (PDOException $e) {
             $erro = "Erro de banco de dados. Tente novamente.";
-            // error_log($e->getMessage());
         }
     }
 }

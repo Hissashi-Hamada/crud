@@ -17,7 +17,7 @@ if ($_POST) {
         $nome = $_POST['nome'] ?? '';
         $preco = $_POST['preco'] ?? '';
         $estoque = $_POST['estoque'] ?? '';
-        $disponivel = isset($_POST['disponivel']) ? 1 : 0; // checkbox tratamento
+        $disponivel = isset($_POST['disponivel']) ? 1 : 0;
 
         $sql = "UPDATE produtos 
             SET nome = :nome, preco = :preco, estoque = :estoque, disponivel = :disponivel 
@@ -40,7 +40,6 @@ if ($_POST) {
     $preco = $_POST['preco'] ?? '';
     $estoque = $_POST['estoque'] ?? '';
     $disponivel = $_POST['disponivel'] ?? '';
-    // print_r(['nome' => $nome,'preco' => $preco,'estoque' => $estoque,'disponivel' => $disponivel]) ;
 
     $sql = "INSERT INTO produtos (nome, preco, estoque, disponivel) VALUES (:nome, :preco, :estoque, :disponivel)";
     $stmt = $pdo->prepare($sql);
@@ -67,6 +66,46 @@ if ($_POST) {
     <title>Produtos</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="<?php echo $public ?>/css/aba_produtos.css"> <!-- Corrigido espaço -->
+    <style>
+    body {
+        margin: 0;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background-color:rgb(153, 155, 158);
+    }
+
+    .table tbody tr {
+        background-color: #212529; /* tom escuro */
+        color: #fff;               /* texto branco */
+    }
+
+    .table tbody tr:hover {
+        background-color: #343a40; /* tom mais claro ao passar o mouse */
+    }
+
+    .table thead {
+        background-color: #000;
+        color: #fff;
+    }
+
+    .table td, .table th {
+        border-color: #444;
+    }
+
+    .tabela-escura tbody tr {
+        background-color: #1a1a1a; /* fundo bem escuro */
+        color: white;
+    }
+
+    .tabela-escura thead {
+        background-color: #000; /* cabeçalho mais escuro */
+        color: white;
+    }
+
+    td{
+        background-color: #000;
+    }
+
+</style>
 </head>
 
 <body>
@@ -119,7 +158,7 @@ if ($_POST) {
 
             <div class="table-responsive">
                 <table class="table table-striped table-bordered align-middle">
-                    <thead class="table-dar">
+                    <thead class="table-dark">
                         <tr>
                             <th>ID</th>
                             <th>Produto</th>

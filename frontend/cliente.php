@@ -4,33 +4,19 @@ include '../backend/verificacao.php';
 
 $id_user = $_SESSION['id'];
 $sql = "SELECT * FROM cliente where id_user = $id_user";
-$stmt = $pdo->prepare($sql);  // preparar a query
-$stmt->execute();             // executar a query
+$stmt = $pdo->prepare($sql); 
+$stmt->execute();     
 
-$clientes = $stmt->fetchAll(PDO::FETCH_ASSOC); // pegar os dados
-
-// Captura dos dados do request (caso queira usar),
+$clientes = $stmt->fetchAll(PDO::FETCH_ASSOC); 
 $nome = $_REQUEST['nome'] ?? '';
 $email = $_REQUEST['email'] ?? '';
 $telefone = $_REQUEST['telefone'] ?? '';
 $data_nacimento = $_REQUEST['data_nacimeno'] ?? '';
 
-// Exemplo de uso: salvar dados na sessão
 $_SESSION['cliente'] = [
     'nome' => $nome,
     'email' => $email
 ];
-
-
-// $stmt = $pdo->prepare($sql);
-// $stmt->execute();
-// $clientes = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-// $sql1 = mysql_query("SELECT id FROM entrada ORDER BY id DESC WHERE placa = $placa LIMIT 1");
-
-//     print_r($sql);
-// die;
-
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $id = $_POST['id'] ?? null;
@@ -40,7 +26,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $telefone = $_POST['telefone'] ?? '';
     $data_nascimento = $_POST['data_nascimento'] ?? '';
 
-    // Verifica duplicidade só no INSERT
     if (!$id) {
         $stmt = $pdo->prepare("SELECT COUNT(*) FROM cliente WHERE email = :email");
         $stmt->bindParam(':email', $email);
@@ -83,6 +68,47 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="<?php echo $public ?>/css/cliente.css">
 </head>
+
+<style>
+    body {
+        margin: 0;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background-color:rgb(153, 155, 158);
+    }
+
+    .table tbody tr {
+        background-color: #212529; /* tom escuro */
+        color: #fff;               /* texto branco */
+    }
+
+    .table tbody tr:hover {
+        background-color: #343a40; /* tom mais claro ao passar o mouse */
+    }
+
+    .table thead {
+        background-color: #000;
+        color: #fff;
+    }
+
+    .table td, .table th {
+        border-color: #444;
+    }
+
+    .tabela-escura tbody tr {
+        background-color: #1a1a1a; /* fundo bem escuro */
+        color: white;
+    }
+
+    .tabela-escura thead {
+        background-color: #000; /* cabeçalho mais escuro */
+        color: white;
+    }
+
+    td{
+        background-color: #000;
+    }
+
+</style>
 
 <body>
 
@@ -145,7 +171,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             <th>Ações</th>
                         </tr>
                     </thead>
-                    <tbody>
+                    <tbody class="bg-dark text-white">
                         <?php foreach ($clientes as $cliente): ?>
                             <tr id="cliente-<?= $cliente['id'] ?>">
                                 <td><?= $cliente['id'] ?></td>

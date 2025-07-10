@@ -11,19 +11,62 @@ include '../backend/verificacao.php';
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Menu Principal</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet" />
-    <style>
-        .botao {
-            cursor: pointer;
-        }
+<style>
+    body {
+        margin: 0;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background-color:rgb(153, 155, 158);
+    }
 
-        .caixa_de_sites {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            flex-direction: row;
-            height: 100%;
-        }
-    </style>
+    .botao {
+        cursor: pointer;
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .botao:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 20px rgba(35, 35, 43, 0.57);
+    }
+
+    .caixa_de_sites {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        height: 100%;
+    }
+
+    #centro-menu {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        display: flex;
+        gap: 50px;
+        flex-wrap: wrap;
+        justify-content: space-around;
+        max-width: 900px;
+        width: 80%;
+        min-width: 240px;
+        flex-direction: row;
+    }
+
+    .card {
+        background-color: rgba(205, 210, 255, 0.14);
+        border: none;
+        border-radius: 12px;
+        padding: 2rem;
+        min-width: 220px;
+        min-height: 200px;
+        box-shadow: 0 4px 15px rgba(12, 8, 8, 0.08);
+    }
+
+    .card h4 {
+        margin: 0;
+        font-size: 1.4rem;
+        color: #333;
+    }
+</style>
 </head>
 
 <body>
@@ -71,28 +114,23 @@ include '../backend/verificacao.php';
         </div>
     </nav>
 
-    <section aria-label="Painel de opções principais" class="py-4">
-        <div class="container">
-            <div class="row g-4">
-                <div class="col-12 col-sm-6 col-md-4 col-lg-3">
-                    <div class="card p-3 h-100 botao" style="min-height: 200px;" onclick="produtos()">
-                        <div class="caixa_de_sites">
-                            <h4>Produtos</h4>
-                        </div>
-                    </div>
-                </div>
 
-                <div class="col-12 col-sm-6 col-md-4 col-lg-3">
-                    <div class="card p-3 h-100 botao" style="min-height: 200px;" onclick="clientes()">
-                        <div class="caixa_de_sites">
-                            <h4>Clientes</h4>
-                        </div>
-                    </div>
-                </div>
-
+<section aria-label="Painel de opções principais" class="py-4">
+    <div class="" id="centro-menu">
+        <div class="card p-3 h-100 botao text-center" onclick="produtos()">
+            <div class="caixa_de_sites">
+                <h3>Produtos</h3>
             </div>
         </div>
-    </section>
+
+        <div class="card p-3 h-100 botao text-center" onclick="clientes()">
+            <div class="caixa_de_sites">
+                <h3>Clientes</h3>
+            </div>
+        </div>
+    </div>
+</section>
+
 
     <script>
         function produtos() {
