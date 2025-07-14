@@ -4,10 +4,10 @@ include '../backend/verificacao.php';
 
 $id_user = $_SESSION['id'];
 $sql = "SELECT * FROM cliente where id_user = $id_user";
-$stmt = $pdo->prepare($sql); 
-$stmt->execute();     
+$stmt = $pdo->prepare($sql);
+$stmt->execute();
 
-$clientes = $stmt->fetchAll(PDO::FETCH_ASSOC); 
+$clientes = $stmt->fetchAll(PDO::FETCH_ASSOC);
 $nome = $_REQUEST['nome'] ?? '';
 $email = $_REQUEST['email'] ?? '';
 $telefone = $_REQUEST['telefone'] ?? '';
@@ -20,7 +20,7 @@ $_SESSION['cliente'] = [
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $id = $_POST['id'] ?? null;
-    $id_user= $_POST['id_user'];
+    $id_user = $_POST['id_user'];
     $nome = $_POST['nome'] ?? '';
     $email = $_POST['email'] ?? '';
     $telefone = $_POST['telefone'] ?? '';
@@ -51,6 +51,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if ($id) {
         $stmt->bindParam(':id', $id);
     }
+    $sql = "UPDATE cliente 
+        SET nome = :nome, email = :email, telefone = :telefone, data_nascimento = :data_nascimento 
+        WHERE id = :id";
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute([
+        ':id' => $id,
+        ':nome' => $nome,
+        ':email' => $email,
+        ':telefone' => $telefone,
+        ':data_nascimento' => $data_nascimento
+    ]);
+
 
     $stmt->execute();
     header('Location: cliente.php');
@@ -73,16 +85,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     body {
         margin: 0;
         font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        background-color:rgb(153, 155, 158);
+        background-color: rgb(153, 155, 158);
     }
 
     .table tbody tr {
-        background-color: #212529; /* tom escuro */
-        color: #fff;               /* texto branco */
+        background-color: #212529;
+        /* tom escuro */
+        color: #fff;
+        /* texto branco */
     }
 
     .table tbody tr:hover {
-        background-color: #343a40; /* tom mais claro ao passar o mouse */
+        background-color: #343a40;
+        /* tom mais claro ao passar o mouse */
     }
 
     .table thead {
@@ -90,24 +105,26 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         color: #fff;
     }
 
-    .table td, .table th {
+    .table td,
+    .table th {
         border-color: #444;
     }
 
     .tabela-escura tbody tr {
-        background-color: #1a1a1a; /* fundo bem escuro */
+        background-color: #1a1a1a;
+        /* fundo bem escuro */
         color: white;
     }
 
     .tabela-escura thead {
-        background-color: #000; /* cabeçalho mais escuro */
+        background-color: #000;
+        /* cabeçalho mais escuro */
         color: white;
     }
 
-    td{
+    td {
         background-color: #000;
     }
-
 </style>
 
 <body>
@@ -216,7 +233,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         <form action="cliente.php" method="post">
 
                             <input id="id" type="hidden" name="id" value="">
-                            <input id="id" type="hidden" name="id_user" value="<?php echo $_SESSION['id'];?>">
+                            <input id="id" type="hidden" name="id_user" value="<?php echo $_SESSION['id']; ?>">
                             <!-- Nome do Cliente -->
                             <div class="mb-3">
                                 <label for="nome" class="form-label">Nome do Cliente</label>
@@ -271,14 +288,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
 
         function editar_cliente(cliente) {
-            console.log(cliente); 
+            console.log(cliente);
 
             document.getElementById('exampleModalLabel').innerHTML = 'Editar cliente'
             document.getElementById('id').value = cliente.id
             document.getElementById('nome').value = cliente.nome
             document.getElementById('email').value = cliente.email
             document.getElementById('telefone').value = cliente.telefone
-            document.getElementById('data_nascimento').value = cliente.data_nascimento 
+            document.getElementById('data_nascimento').value = cliente.data_nascimento
         }
     </script>
 </body>

@@ -52,7 +52,7 @@ if ($_POST) {
         header('Location: aba_produto.php');
         exit();
     }
-}
+}   
 
 
 ?>
