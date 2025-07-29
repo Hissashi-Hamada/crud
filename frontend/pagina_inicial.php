@@ -52,13 +52,13 @@ include '../backend/verificacao.php';
     }
 
     .card {
-        background-color: rgba(205, 210, 255, 0.14);
+        background-color: rgba(232, 241, 255, 1);
         border: none;
         border-radius: 12px;
         padding: 2rem;
         min-width: 220px;
         min-height: 200px;
-        box-shadow: 0 4px 15px rgba(12, 8, 8, 0.08);
+        box-shadow: 0 4px 15px rgba(12, 8, 8, 0.3);
     }
 
     .card h4 {

@@ -3,15 +3,16 @@ include '../backend/config.php';
 include '../backend/verificacao.php';
 
 $id_user = $_SESSION['id'];
-$sql = "SELECT * FROM cliente where id_user = $id_user";
+$sql = "SELECT * FROM cliente WHERE id_user = :id_user";
 $stmt = $pdo->prepare($sql);
+$stmt->bindParam(':id_user', $id_user);
 $stmt->execute();
-
 $clientes = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
 $nome = $_REQUEST['nome'] ?? '';
 $email = $_REQUEST['email'] ?? '';
 $telefone = $_REQUEST['telefone'] ?? '';
-$data_nacimento = $_REQUEST['data_nacimeno'] ?? '';
+$data_nascimento = $_REQUEST['data_nascimento'] ?? ''; // Corrigido aqui
 
 $_SESSION['cliente'] = [
     'nome' => $nome,
@@ -27,44 +28,40 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $data_nascimento = $_POST['data_nascimento'] ?? '';
 
     if (!$id) {
+        // Verifica se email já existe
         $stmt = $pdo->prepare("SELECT COUNT(*) FROM cliente WHERE email = :email");
         $stmt->bindParam(':email', $email);
         $stmt->execute();
+
         if ($stmt->fetchColumn() > 0) {
             die("Erro: E-mail já cadastrado.");
         }
 
+        // INSERT
         $sql = "INSERT INTO cliente (id_user, nome, email, telefone, data_nascimento) 
                 VALUES (:id_user, :nome, :email, :telefone, :data_nascimento)";
+        $stmt = $pdo->prepare($sql);
+        $stmt->bindParam(':id_user', $id_user);
+        $stmt->bindParam(':nome', $nome);
+        $stmt->bindParam(':email', $email);
+        $stmt->bindParam(':telefone', $telefone);
+        $stmt->bindParam(':data_nascimento', $data_nascimento);
+        $stmt->execute();
+
     } else {
+        // UPDATE
         $sql = "UPDATE cliente 
                 SET nome = :nome, email = :email, telefone = :telefone, data_nascimento = :data_nascimento 
                 WHERE id = :id";
-    }
-
-    $stmt = $pdo->prepare($sql);
-    $stmt->bindParam(':id_user', $id_user);
-    $stmt->bindParam(':nome', $nome);
-    $stmt->bindParam(':email', $email);
-    $stmt->bindParam(':telefone', $telefone);
-    $stmt->bindParam(':data_nascimento', $data_nascimento);
-    if ($id) {
+        $stmt = $pdo->prepare($sql);
         $stmt->bindParam(':id', $id);
+        $stmt->bindParam(':nome', $nome);
+        $stmt->bindParam(':email', $email);
+        $stmt->bindParam(':telefone', $telefone);
+        $stmt->bindParam(':data_nascimento', $data_nascimento);
+        $stmt->execute();
     }
-    $sql = "UPDATE cliente 
-        SET nome = :nome, email = :email, telefone = :telefone, data_nascimento = :data_nascimento 
-        WHERE id = :id";
-    $stmt = $pdo->prepare($sql);
-    $stmt->execute([
-        ':id' => $id,
-        ':nome' => $nome,
-        ':email' => $email,
-        ':telefone' => $telefone,
-        ':data_nascimento' => $data_nascimento
-    ]);
 
-
-    $stmt->execute();
     header('Location: cliente.php');
     exit;
 }
@@ -82,49 +79,49 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 </head>
 
 <style>
-    body {
-        margin: 0;
-        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        background-color: rgb(153, 155, 158);
-    }
+body {
+    margin: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: rgb(153, 155, 158);
+}
 
-    .table tbody tr {
-        background-color: #212529;
-        /* tom escuro */
-        color: #fff;
-        /* texto branco */
-    }
+.table tbody tr {
+    background-color: #212529;
+    /* tom escuro */
+    color: #fff;
+    /* texto branco */
+}
 
-    .table tbody tr:hover {
-        background-color: #343a40;
-        /* tom mais claro ao passar o mouse */
-    }
+.table tbody tr:hover {
+    background-color: #343a40;
+    /* tom mais claro ao passar o mouse */
+}
 
-    .table thead {
-        background-color: #000;
-        color: #fff;
-    }
+.table thead {
+    background-color: #000;
+    color: #fff;
+}
 
-    .table td,
-    .table th {
-        border-color: #444;
-    }
+.table td,
+.table th {
+    border-color: #444;
+}
 
-    .tabela-escura tbody tr {
-        background-color: #1a1a1a;
-        /* fundo bem escuro */
-        color: white;
-    }
+.tabela-escura tbody tr {
+    background-color: #1a1a1a;
+    /* fundo bem escuro */
+    color: white;
+}
 
-    .tabela-escura thead {
-        background-color: #000;
-        /* cabeçalho mais escuro */
-        color: white;
-    }
+.tabela-escura thead {
+    background-color: #000;
+    /* cabeçalho mais escuro */
+    color: white;
+}
 
-    td {
-        background-color: #000;
-    }
+td {
+    background-color: #000;
+}
 </style>
 
 <body>
@@ -146,18 +143,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
                     </ul>
                     <?php if (($_SESSION['id'] == null)) { ?>
-                        <div class="d-flex gap-2">
-                            <a class="btn btn-primary" style="border: 1px solid white;"
-                                href="<?= $front ?>/login.php">Login</a>
-                            <a class="btn btn-success" style="border: 1px solid white;"
-                                href="<?= $front ?>/cadastro.php">Cadastro</a>
-                        </div>
+                    <div class="d-flex gap-2">
+                        <a class="btn btn-primary" style="border: 1px solid white;"
+                            href="<?= $front ?>/login.php">Login</a>
+                        <a class="btn btn-success" style="border: 1px solid white;"
+                            href="<?= $front ?>/cadastro.php">Cadastro</a>
+                    </div>
                     <?php } else { ?>
-                        <div class="d-flex gap-2">
-                            <h4 class="text-dark"><?php echo $_SESSION['nome'] ?></h4>
-                            <a class="btn btn-primary" style="border: 1px solid white;"
-                                href="<?= $back ?>/deslogar.php">Sair</a>
-                        </div>
+                    <div class="d-flex gap-2">
+                        <h4 class="text-dark"><?php echo $_SESSION['nome'] ?></h4>
+                        <a class="btn btn-primary" style="border: 1px solid white;"
+                            href="<?= $back ?>/deslogar.php">Sair</a>
+                    </div>
                     <?php } ?>
                 </div>
             </div>
@@ -190,32 +187,32 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     </thead>
                     <tbody class="bg-dark text-white">
                         <?php foreach ($clientes as $cliente): ?>
-                            <tr id="cliente-<?= $cliente['id'] ?>">
-                                <td><?= $cliente['id'] ?></td>
-                                <td><?= htmlspecialchars($cliente['nome']) ?></td>
-                                <td><?= $cliente['email'] ?></td>
-                                <td><?= $cliente['telefone'] ?></td>
-                                <td><?= $cliente['data_nascimento'] ?></td>
-                                <td class="d-flex gap-2">
-                                    <!-- Botão Editar -->
-                                    <button type="button" class="btn btn-warning" data-bs-toggle="modal"
-                                        data-bs-target="#exampleModal"
-                                        onclick='editar_cliente(<?php echo json_encode($cliente); ?>)'>
-                                        Editar
-                                    </button>
+                        <tr id="cliente-<?= $cliente['id'] ?>">
+                            <td><?= $cliente['id'] ?></td>
+                            <td><?= htmlspecialchars($cliente['nome']) ?></td>
+                            <td><?= $cliente['email'] ?></td>
+                            <td><?= $cliente['telefone'] ?></td>
+                            <td><?= $cliente['data_nascimento'] ?></td>
+                            <td class="d-flex gap-2">
+                                <!-- Botão Editar -->
+                                <button type="button" class="btn btn-warning" data-bs-toggle="modal"
+                                    data-bs-target="#exampleModal"
+                                    onclick='editar_cliente(<?php echo json_encode($cliente); ?>)'>
+                                    Editar
+                                </button>
 
-                                    <form method="post" action="../backend/add_exclude_cliente.php"
-                                        onsubmit="return confirmarExclusao();">
-                                        <input type="hidden" name="id" value="<?= $cliente['id'] ?>">
-                                        <button class="btn btn-danger">Excluir</button>
-                                    </form>
-                                </td>
-                            </tr>
+                                <form method="post" action="../backend/add_exclude_cliente.php"
+                                    onsubmit="return confirmarExclusao();">
+                                    <input type="hidden" name="id" value="<?= $cliente['id'] ?>">
+                                    <button class="btn btn-danger">Excluir</button>
+                                </form>
+                            </td>
+                        </tr>
                         <?php endforeach; ?>
                         <?php if (empty($cliente)): ?>
-                            <tr>
-                                <td colspan="6" class="text-center">Nenhum cliente encontrado.</td>
-                            </tr>
+                        <tr>
+                            <td colspan="6" class="text-center">Nenhum cliente encontrado.</td>
+                        </tr>
                         <?php endif; ?>
                     </tbody>
                 </table>
@@ -225,78 +222,84 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
+
                     <div class="modal-header">
-                        <h1 class="modal-title fs-5" id="exampleModalLabel">adicionar cliente</h1>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        <h1 class="modal-title fs-5" id="exampleModalLabel">Adicionar cliente</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
                     </div>
+
                     <div class="modal-body">
                         <form action="cliente.php" method="post">
+                            <!-- ID do Cliente (oculto) -->
+                            <input type="hidden" id="id" name="id" value="">
 
-                            <input id="id" type="hidden" name="id" value="">
-                            <input id="id" type="hidden" name="id_user" value="<?php echo $_SESSION['id']; ?>">
-                            <!-- Nome do Cliente -->
+                            <!-- ID do Usuário (oculto) -->
+                            <input type="hidden" name="id_user" value="<?php echo $_SESSION['id']; ?>">
+
+                            <!-- Nome -->
                             <div class="mb-3">
                                 <label for="nome" class="form-label">Nome do Cliente</label>
                                 <input type="text" class="form-control" id="nome" name="nome" required>
                             </div>
 
-                            <!-- Preço -->
+                            <!-- Email -->
                             <div class="mb-3">
-                                <label for="preco" class="form-label">Email</label>
-                                <input type="email" step="0.01" class="form-control" id="email" name="email" required>
+                                <label for="email" class="form-label">Email</label>
+                                <input type="email" class="form-control" id="email" name="email" required>
                             </div>
 
-                            <!-- Estoque -->
+                            <!-- Telefone -->
                             <div class="mb-3">
                                 <label for="telefone" class="form-label">Telefone</label>
-                                <input type="int" class="form-control" id="telefone" name="telefone" required>
+                                <input type="text" class="form-control" id="telefone" name="telefone" required>
                             </div>
 
-                            <!-- Estoque -->
+                            <!-- Data de Nascimento -->
                             <div class="mb-3">
                                 <label for="data_nascimento" class="form-label">Data de Nascimento</label>
-                                <input type="date" class="form-control" id="data_nascimento" name="data_nascimento" required>
+                                <input type="date" class="form-control" id="data_nascimento" name="data_nascimento"
+                                    required>
                             </div>
 
-                            Botão de envio
+                            <!-- Botões -->
                             <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                <button type="submit" class="btn btn-primary">Save changes</button>
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+                                <button type="submit" class="btn btn-primary">Salvar</button>
                             </div>
                         </form>
                     </div>
+
                 </div>
             </div>
         </div>
-
 
     </section>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        function confirmarExclusao() {
-            return confirm("Tem certeza que deseja excluir este cliente?");
-        }
+    function confirmarExclusao() {
+        return confirm("Tem certeza que deseja excluir este cliente?");
+    }
 
-        function adicionar_cliente() {
-            document.getElementById('exampleModalLabel').innerHTML = 'Adicionar cliente'
-            document.getElementById('id').value = ''
-            document.getElementById('nome').value = ''
-            document.getElementById('email').value = ''
-            document.getElementById('telefone').value = ''
-            document.getElementById('data_nacimento').value = ''
-        }
+    function adicionar_cliente() {
+        document.getElementById('exampleModalLabel').innerHTML = 'Adicionar cliente'
+        document.getElementById('id').value = ''
+        document.getElementById('nome').value = ''
+        document.getElementById('email').value = ''
+        document.getElementById('telefone').value = ''
+        document.getElementById('data_nacimento').value = ''
+    }
 
-        function editar_cliente(cliente) {
-            console.log(cliente);
+    function editar_cliente(cliente) {
+        console.log(cliente);
 
-            document.getElementById('exampleModalLabel').innerHTML = 'Editar cliente'
-            document.getElementById('id').value = cliente.id
-            document.getElementById('nome').value = cliente.nome
-            document.getElementById('email').value = cliente.email
-            document.getElementById('telefone').value = cliente.telefone
-            document.getElementById('data_nascimento').value = cliente.data_nascimento
-        }
+        document.getElementById('exampleModalLabel').innerHTML = 'Editar cliente'
+        document.getElementById('id').value = cliente.id
+        document.getElementById('nome').value = cliente.nome
+        document.getElementById('email').value = cliente.email
+        document.getElementById('telefone').value = cliente.telefone
+        document.getElementById('data_nascimento').value = cliente.data_nascimento
+    }
     </script>
 </body>
 

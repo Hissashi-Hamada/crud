@@ -5,5 +5,4 @@ echo "<pre>";
 echo "Front path: $front\n";
 echo "Config carregado com sucesso.";
 echo "</pre>";
-
 ?>
