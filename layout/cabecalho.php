@@ -1,9 +1,3 @@
-<?php
-    __DIR__ . '/backend/config.php';
-include __DIR__ .  '/backend/verificacao.php';
-include "./layout/cabecalho.php";
-
-?>
 <!DOCTYPE html>
 <html lang="pt-br">
 
@@ -16,7 +10,7 @@ include "./layout/cabecalho.php";
     body {
         margin: 0;
         font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        background-color:rgb(153, 155, 158);
+        background-color:rgba(56, 90, 139, 1);
     }
 
     .botao {
@@ -84,21 +78,6 @@ include "./layout/cabecalho.php";
 
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                    <!-- <li class="nav-item"><a class="nav-link active text-white" aria-current="page" href="#">Menu</a>
-                    </li>
-                    <li class="nav-item"><a class="nav-link text-white" href="#">Link</a></li>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle text-white" href="#" id="navbarDropdown" role="button"
-                            data-bs-toggle="dropdown" aria-expanded="false">Mostrar mais</a>
-                        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            <li><a class="dropdown-item" href="#">Ação</a></li>
-                            <li><a class="dropdown-item" href="#">Outra Ação</a></li>
-                            <li>
-                                <hr class="dropdown-divider">
-                            </li>
-                            <li><a class="dropdown-item" href="#">Algo a Mais</a></li>
-                        </ul>
-                    </li> -->
                 </ul>
                 <?php if (($_SESSION['id'] == null)) { ?>
                     <div class="d-flex gap-2">
@@ -114,36 +93,3 @@ include "./layout/cabecalho.php";
             </div>
         </div>
     </nav>
-
-
-<section aria-label="Painel de opções principais" class="py-4">
-    <div class="" id="centro-menu">
-        <div class="card p-3 h-100 botao text-center" onclick="produtos()">
-            <div class="caixa_de_sites">
-                <h3>Produtos</h3>
-            </div>
-        </div>
-
-        <div class="card p-3 h-100 botao text-center" onclick="clientes()">
-            <div class="caixa_de_sites">
-                <h3>Clientes</h3>
-            </div>
-        </div>
-    </div>
-</section>
-
-
-    <script>
-        function produtos() {
-            window.location.href = "<?= $front ?>/aba_produto.php";
-        }
-
-        function clientes() {
-            window.location.href = "<?= $front ?>/cliente.php";
-        }
-    </script>
-
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"></script>
-</body>
-
-</html>

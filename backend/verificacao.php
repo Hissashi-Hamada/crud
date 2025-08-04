@@ -3,5 +3,5 @@
 session_start();
 
     if ($_SESSION['id'] == null) {
-    header('Location: login.php');
+    header('Location: frontend/login.php');
 }

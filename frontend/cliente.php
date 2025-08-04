@@ -1,6 +1,7 @@
 <?php
-include '../backend/config.php';
-include '../backend/verificacao.php';
+include __DIR__ . '/../backend/config.php';
+include __DIR__ . '/../backend/verificacao.php';
+include __DIR__ . '/../layout/cabecalho.php';
 
 $id_user = $_SESSION['id'];
 $sql = "SELECT * FROM cliente WHERE id_user = :id_user";
@@ -66,100 +67,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     exit;
 }
 ?>
-
-<!DOCTYPE html>
-<html lang="pt-br">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Clientes</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="<?php echo $public ?>/css/cliente.css">
-</head>
-
-<style>
-body {
-    margin: 0;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background-color: rgb(153, 155, 158);
-}
-
-.table tbody tr {
-    background-color: #212529;
-    /* tom escuro */
-    color: #fff;
-    /* texto branco */
-}
-
-.table tbody tr:hover {
-    background-color: #343a40;
-    /* tom mais claro ao passar o mouse */
-}
-
-.table thead {
-    background-color: #000;
-    color: #fff;
-}
-
-.table td,
-.table th {
-    border-color: #444;
-}
-
-.tabela-escura tbody tr {
-    background-color: #1a1a1a;
-    /* fundo bem escuro */
-    color: white;
-}
-
-.tabela-escura thead {
-    background-color: #000;
-    /* cabeçalho mais escuro */
-    color: white;
-}
-
-td {
-    background-color: #000;
-}
-</style>
-
-<body>
-
-    <header>
-        <nav class="navbar navbar-expand-lg navbar-light bg-warning">
-            <div class="container-fluid">
-                <a class="navbar-brand" href="<?= $front ?>/pagina_inicial.php">Menu</a>
-
-                <!-- Botão para toggle do menu mobile -->
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
-                    data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
-                    aria-expanded="false" aria-label="Alternar navegação">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-
-                <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-
-                    </ul>
-                    <?php if (($_SESSION['id'] == null)) { ?>
-                    <div class="d-flex gap-2">
-                        <a class="btn btn-primary" style="border: 1px solid white;"
-                            href="<?= $front ?>/login.php">Login</a>
-                        <a class="btn btn-success" style="border: 1px solid white;"
-                            href="<?= $front ?>/cadastro.php">Cadastro</a>
-                    </div>
-                    <?php } else { ?>
-                    <div class="d-flex gap-2">
-                        <h4 class="text-dark"><?php echo $_SESSION['nome'] ?></h4>
-                        <a class="btn btn-primary" style="border: 1px solid white;"
-                            href="<?= $back ?>/deslogar.php">Sair</a>
-                    </div>
-                    <?php } ?>
-                </div>
-            </div>
-        </nav>
-    </header>
 
     <section class="py-5">
         <div class="container">
@@ -301,6 +208,6 @@ td {
         document.getElementById('data_nascimento').value = cliente.data_nascimento
     }
     </script>
-</body>
-
-</html>
+<?php
+include __DIR__ . '/../layout/rodape.php';
+?>

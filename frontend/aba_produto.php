@@ -1,6 +1,8 @@
 <?php
-include '../backend/config.php';
-include '../backend/verificacao.php';
+include __DIR__ . '/../backend/config.php';
+include __DIR__ . '/../backend/verificacao.php';
+include __DIR__ . '/../layout/cabecalho.php';
+
 
 // SELECT produtos
 $sql = "SELECT * FROM produtos";
@@ -42,71 +44,6 @@ if ($_POST) {
 }
 ?>
 
-<!DOCTYPE html>
-<html lang="pt-br">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Produtos</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="<?= $public ?>/css/aba_produtos.css">
-    <style>
-    body {
-        margin: 0;
-        background-color: rgb(153, 155, 158);
-        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    }
-
-    .table tbody tr {
-        background-color: #212529;
-        color: #fff;
-    }
-
-    .table tbody tr:hover {
-        background-color: #343a40;
-    }
-
-    .table thead {
-        background-color: #000;
-        color: #fff;
-    }
-
-    .table td,
-    .table th {
-        border-color: #444;
-    }
-    </style>
-</head>
-
-<body>
-    <header>
-        <nav class="navbar navbar-expand-lg navbar-dark bg-success">
-            <div class="container-fluid">
-                <a class="navbar-brand" href="<?= $front ?>/pagina_inicial.php">Menu</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
-                    data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
-                    aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-
-                <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                    <ul class="navbar-nav me-auto mb-2 mb-lg-0"></ul>
-                    <?php if (!isset($_SESSION['id'])) { ?>
-                    <div class="d-flex gap-2">
-                        <a class="btn btn-primary" href="<?= $front ?>/login.php">Login</a>
-                        <a class="btn btn-success" href="<?= $front ?>/cadastro.php">Cadastro</a>
-                    </div>
-                    <?php } else { ?>
-                    <div class="d-flex gap-2">
-                        <h4 class="text-light"><?php echo htmlspecialchars($_SESSION['nome']) ?></h4>
-                        <a class="btn btn-primary" href="<?= $back ?>/deslogar.php">Sair</a>
-                    </div>
-                    <?php } ?>
-                </div>
-            </div>
-        </nav>
-    </header>
 
     <section class="py-5">
         <div class="container">
@@ -226,6 +163,7 @@ if ($_POST) {
         document.getElementById('disponivel').checked = produto.disponivel == 1;
     }
     </script>
-</body>
 
-</html>
+<?php
+include __DIR__ . '/../layout/rodape.php';
+?>
